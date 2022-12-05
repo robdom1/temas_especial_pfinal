@@ -1,0 +1,26 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">proyecto_final</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_cart">Cart</string>
+    <string name="action_notification">Notifications</string>
+    <string name="action_search">Search</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_category">Category</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_product">Product</string>
+    <string name="menu_profile">Profile</string>
+    <string name="menu_logout">Log Out</string>
+    <string name="menu_help" tools:ignore="ExtraTranslation">Help</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="new_category_title">New Category</string>
+    <string name="new_category_name_hint">Category name</string>
+    <string name="category_product_title">Products</string>
+    <string name="product_title">Product Details</string>
+    <string name="new_product_title">New Product</string>
+</resources>

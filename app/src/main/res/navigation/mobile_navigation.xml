@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.proyecto_final.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_category"
+        android:name="com.example.proyecto_final.ui.category.CategoryFragment"
+        android:label="@string/menu_category"
+        tools:layout="@layout/fragment_category" >
+        <action
+            android:id="@+id/action_nav_category_to_newCategoryFragment"
+            app:destination="@id/nav_newCategory" />
+        <action
+            android:id="@+id/action_nav_category_to_nav_category_product"
+            app:destination="@id/nav_category_product" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_product"
+        android:name="com.example.proyecto_final.ui.product.ProductsFragment"
+        android:label="@string/menu_product"
+        tools:layout="@layout/fragment_products" >
+        <action
+            android:id="@+id/action_nav_product_to_nav_product_detail"
+            app:destination="@id/nav_product_detail" />
+        <action
+            android:id="@+id/action_nav_product_to_nav_new_product"
+            app:destination="@id/nav_new_product" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_help"
+        android:name="com.example.proyecto_final.ui.help.HelpFragment"
+        android:label="@string/menu_help"
+        tools:layout="@layout/fragment_help" />
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.proyecto_final.ui.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/nav_newCategory"
+        android:name="com.example.proyecto_final.ui.category.NewCategoryFragment"
+        android:label="@string/new_category_title"
+        tools:layout="@layout/fragment_new_category">
+        <action
+            android:id="@+id/action_newCategoryFragment_to_nav_category"
+            app:destination="@id/nav_category" />
+    </fragment>
+    <fragment android:id="@+id/nav_category_product"
+        android:name="com.example.proyecto_final.ui.category.CategoryProductFragment"
+        tools:layout="@layout/fragment_category_product"
+        android:label="@string/category_product_title"
+        >
+        <action
+            android:id="@+id/action_nav_category_product_to_nav_product_detail"
+            app:destination="@id/nav_product_detail" />
+    </fragment>
+    <fragment android:id="@+id/nav_product_detail"
+        android:name="com.example.proyecto_final.ui.product.ProductDetailFragment"
+        tools:layout="@layout/fragment_product_detail"
+        android:label="@string/product_title"
+        />
+    <fragment android:id="@+id/nav_new_product"
+        android:name="com.example.proyecto_final.ui.product.NewProductFragment"
+        tools:layout="@layout/fragment_new_product"
+        android:label="@string/new_product_title"
+        />
+</navigation>
