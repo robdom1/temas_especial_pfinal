@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.proyecto_final.database.AppDatabase;
 import com.example.proyecto_final.database.dao.ProductDAO;
+import com.example.proyecto_final.entities.Image;
 import com.example.proyecto_final.entities.Product;
 import com.example.proyecto_final.entities.relations.ProductImages;
 
@@ -116,6 +117,32 @@ public class ProductRepo {
         @Override
         protected Void doInBackground(UUID... productIds) {
             asyncProductDao.deleteById(productIds[0]);
+            return null;
+        }
+    }
+
+    public void insertImages(ProductImages images){
+        new InsertProductImage(productDAO).execute(images);
+    }
+
+    private static class InsertProductImage extends AsyncTask<ProductImages, Void, Void>{
+
+        private ProductDAO asyncProductDao;
+
+        private InsertProductImage(ProductDAO productDAO){
+            this.asyncProductDao = productDAO;
+        }
+
+        @Override
+        protected Void doInBackground(ProductImages... productImages) {
+
+            UUID id = asyncProductDao.insert(productImages[0].getProduct());
+
+            for (Image image : productImages[0].getProductImages()) {
+                image.setProductId(id);
+            }
+            asyncProductDao.insertImage(productImages[0]);
+
             return null;
         }
     }

@@ -167,7 +167,9 @@ public class NewProductFragment extends Fragment {
                     @Override
                     public void onSuccess(Uri uri) {
                         Log.d("item", "getDownloadUrl: " + uri.toString());
+
 //                        newProduct.setImgUrl(uri.toString());
+                        
                         mViewModel.insert(newProduct);
                         clearInputs();
                         getActivity().onBackPressed();
