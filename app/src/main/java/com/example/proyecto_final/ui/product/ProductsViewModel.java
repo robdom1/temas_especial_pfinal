@@ -72,9 +72,9 @@ public class ProductsViewModel extends AndroidViewModel {
         productRepo.deleteById(productId);
     }
 
-    public void insertImages(ProductImages productImages){
-        productRepo.insertImages(productImages);
-    }
+//    public void insertImages(ProductImages productImages){
+//        productRepo.insertImages(productImages);
+//    }
 
 
 

@@ -17,13 +17,13 @@ import java.util.UUID;
 public interface ProductDAO {
 
     @Insert
-    UUID insert(Product product);
+    void insert(Product product);
 
     @Update
     void update (Product product);
 
-    @Insert
-    void insertImage(ProductImages imageUrl);
+//    @Insert
+//    void insertImage(ProductImages imageUrl);
 
     @Delete
     void delete (Product product);

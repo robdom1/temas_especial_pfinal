@@ -121,29 +121,29 @@ public class ProductRepo {
         }
     }
 
-    public void insertImages(ProductImages images){
-        new InsertProductImage(productDAO).execute(images);
-    }
-
-    private static class InsertProductImage extends AsyncTask<ProductImages, Void, Void>{
-
-        private ProductDAO asyncProductDao;
-
-        private InsertProductImage(ProductDAO productDAO){
-            this.asyncProductDao = productDAO;
-        }
-
-        @Override
-        protected Void doInBackground(ProductImages... productImages) {
-
-            UUID id = asyncProductDao.insert(productImages[0].getProduct());
-
-            for (Image image : productImages[0].getProductImages()) {
-                image.setProductId(id);
-            }
-            asyncProductDao.insertImage(productImages[0]);
-
-            return null;
-        }
-    }
+//    public void insertImages(ProductImages images){
+//        new InsertProductImage(productDAO).execute(images);
+//    }
+//
+//    private static class InsertProductImage extends AsyncTask<ProductImages, Void, Void>{
+//
+//        private ProductDAO asyncProductDao;
+//
+//        private InsertProductImage(ProductDAO productDAO){
+//            this.asyncProductDao = productDAO;
+//        }
+//
+//        @Override
+//        protected Void doInBackground(ProductImages... productImages) {
+//
+//            UUID id = asyncProductDao.insert(productImages[0].getProduct());
+//
+//            for (Image image : productImages[0].getProductImages()) {
+//                image.setProductId(id);
+//            }
+//            asyncProductDao.insertImage(productImages[0]);
+//
+//            return null;
+//        }
+//    }
 }
