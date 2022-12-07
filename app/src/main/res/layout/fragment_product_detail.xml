@@ -10,20 +10,24 @@
     <TextView
         android:id="@+id/product_detail_description_textView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:maxLines="4"
+        android:gravity="center_vertical"
         android:singleLine="false"
         android:text="TextView"
-        android:textSize="34sp"
+        app:autoSizeMaxTextSize="34sp"
+        app:autoSizeMinTextSize="16sp"
+        app:autoSizeStepGranularity="2sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/product_detail_viewPager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/product_detail_imageView"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/product_detail_viewPager"
         android:layout_width="0dp"
         android:layout_height="250dp"
         android:layout_marginStart="16dp"
@@ -33,6 +37,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/product_detail_description_textView" />
+
 
     <TextView
         android:id="@+id/product_detail_price"
@@ -47,7 +52,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/product_detail_imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/product_detail_viewPager" />
 
     <Button
         android:id="@+id/minus_qty_btn"

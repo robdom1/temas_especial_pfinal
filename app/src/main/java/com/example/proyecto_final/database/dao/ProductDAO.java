@@ -7,6 +7,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.example.proyecto_final.entities.Image;
 import com.example.proyecto_final.entities.Product;
 import com.example.proyecto_final.entities.relations.ProductImages;
 
@@ -19,11 +20,12 @@ public interface ProductDAO {
     @Insert
     void insert(Product product);
 
+    @Insert
+    void insertImage(Image image);
+
     @Update
     void update (Product product);
 
-//    @Insert
-//    void insertImage(ProductImages imageUrl);
 
     @Delete
     void delete (Product product);

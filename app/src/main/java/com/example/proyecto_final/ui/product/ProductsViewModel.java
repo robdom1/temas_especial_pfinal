@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.proyecto_final.database.repositories.ProductRepo;
+import com.example.proyecto_final.entities.Image;
 import com.example.proyecto_final.entities.Product;
 import com.example.proyecto_final.entities.relations.ProductImages;
 
@@ -58,6 +59,10 @@ public class ProductsViewModel extends AndroidViewModel {
 
     public void insert(Product product){
         productRepo.insert(product);
+    }
+
+    public void insertImage(Image image){
+        productRepo.insertImage(image);
     }
 
     public void update(Product product){

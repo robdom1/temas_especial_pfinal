@@ -15,7 +15,7 @@ import com.example.proyecto_final.entities.Category;
 import com.example.proyecto_final.entities.Image;
 import com.example.proyecto_final.entities.Product;
 
-@Database(entities = {Product.class, Category.class, Image.class}, version = 2, exportSchema = false)
+@Database(entities = {Product.class, Category.class, Image.class}, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static String NAME = "ECOMMERCE_APP";

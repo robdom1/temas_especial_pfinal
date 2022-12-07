@@ -59,6 +59,26 @@ public class ProductRepo {
         }
     }
 
+    // Insertar imagen
+    public void insertImage(Image image){
+        new InsertImageAsyncTask(productDAO).execute(image);
+    }
+
+    private static class InsertImageAsyncTask extends AsyncTask<Image, Void, Void> {
+
+        private ProductDAO asyncProductDao;
+
+        private InsertImageAsyncTask(ProductDAO productDao){
+            this.asyncProductDao = productDao;
+        }
+
+        @Override
+        protected Void doInBackground(Image... images) {
+            asyncProductDao.insertImage(images[0]);
+            return null;
+        }
+    }
+
 
     // Actualizar categoria
     public void update(Product product){

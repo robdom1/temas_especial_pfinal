@@ -62,13 +62,17 @@
             <TextView
                 android:id="@+id/product_description_textView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_margin="@dimen/text_margin"
+                android:gravity="center_vertical"
                 android:maxLines="3"
                 android:singleLine="false"
                 android:text="123"
                 android:textAppearance="?attr/textAppearanceListItem"
-                android:textSize="24sp" />
+                app:autoSizeMaxTextSize="24sp"
+                app:autoSizeMinTextSize="16sp"
+                app:autoSizeStepGranularity="2sp"
+                app:autoSizeTextType="uniform" />
 
             <TextView
                 android:id="@+id/product_price_textView"

@@ -74,11 +74,16 @@ public class ProductItemAdapter  extends RecyclerView.Adapter<ProductItemAdapter
             public void onChanged(ProductImages productImages) {
                 if(productImages != null){
                     if (!productImages.getProductImages().isEmpty()){
-                        Glide.with(mContext).load(productImages.getProductImages().get(0)).into(holder.productImage);
+                        Log.d("TAG", "onChanged: " + productImages.getProductImages().get(0).getImgUrl());
+                        Glide.with(mContext)
+                                .load(productImages.getProductImages().get(0).getImgUrl())
+                                .error(R.drawable.ic_image_not_found)
+                                .into(holder.productImage);
                         return;
                     }
+                    holder.productImage.setImageResource(R.drawable.ic_image_not_found);
                 }
-                holder.productImage.setImageResource(R.drawable.ic_image_not_found);
+
             }
         });
 

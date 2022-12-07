@@ -16,6 +16,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -32,7 +33,10 @@ import com.example.proyecto_final.R;
 import com.example.proyecto_final.databinding.FragmentNewProductBinding;
 import com.example.proyecto_final.databinding.FragmentProductDetailBinding;
 import com.example.proyecto_final.entities.Category;
+import com.example.proyecto_final.entities.Image;
 import com.example.proyecto_final.entities.Product;
+import com.example.proyecto_final.ui.PhotoAdapter;
+import com.example.proyecto_final.ui.PhotoUriAdapter;
 import com.example.proyecto_final.ui.category.CategoryViewModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -46,19 +50,24 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
 public class NewProductFragment extends Fragment {
 
     private FragmentNewProductBinding binding;
-    private Uri image;
+    private List<Uri> images = new ArrayList<>();
     public static final int REQUEST_IMAGE_CAPTURE = 1;
     public static final int REQUEST_GALLERY = 2;
     public static final int REQUEST_FILE = 3;
     public static final int REQUEST_IMAGE_PERM = 101;
     private ProductsViewModel mViewModel;
+    private ViewPager2 viewPager;
+    private PhotoUriAdapter adapter;
     private StorageReference mStorageRef = FirebaseStorage.getInstance().getReference();
+
+
 
 
     @Override
@@ -74,6 +83,9 @@ public class NewProductFragment extends Fragment {
 
         mViewModel = new ViewModelProvider(this).get(ProductsViewModel.class);
         CategoryViewModel categoryViewModel = new ViewModelProvider(this).get(CategoryViewModel.class);
+        viewPager = binding.newProductViewpager;
+        adapter = new PhotoUriAdapter(getContext());
+        viewPager.setAdapter(adapter);
 
         categoryViewModel.getAllCategories().observe(getViewLifecycleOwner(), new Observer<List<Category>>() {
             @Override
@@ -119,13 +131,15 @@ public class NewProductFragment extends Fragment {
                 String productCategory = binding.newProductCategorySpinner.getItemAtPosition(productCategoryPos).toString();
 
                 Product product = new Product(productDescription, precio, productCategory);
-                if(image != null){
-                    uploadToFirebase(image, product);
-                }else{
+                if(!images.isEmpty()){
+                    uploadToFirebase(images, product);
+                }else {
                     mViewModel.insert(product);
                     clearInputs();
-                    getActivity().onBackPressed();
+//                    getActivity().onBackPressed();
                 }
+
+
             }
         });
 
@@ -136,7 +150,7 @@ public class NewProductFragment extends Fragment {
             }
         });
 
-        binding.newProductImgView.setOnClickListener(new View.OnClickListener() {
+        binding.addPhotobtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startPictureDialog();
@@ -147,43 +161,53 @@ public class NewProductFragment extends Fragment {
     }
 
     private void clearInputs(){
-        binding.newProductImgView.setImageResource(R.drawable.ic_image_not_found);
+        images.clear();
+        images.add(null);
+        adapter.setList(images);
         binding.newProductDescription.setText("");
         binding.newProductPrice.setText("");
         binding.newProductCategorySpinner.setSelection(0);
-        image = null;
+        images.clear();
+
     }
 
-    private void uploadToFirebase(Uri imageUri, Product newProduct) {
+    private void uploadToFirebase(List<Uri> imageUriList, Product newProduct) {
 
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "." + getFileExt(imageUri);
+        for(int i = 0; i < imageUriList.size(); i++){
+            int listSize = imageUriList.size();
+            Uri imageUri = imageUriList.get(i);
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "JPEG_" + timeStamp + "." + getFileExt(imageUri);
 
-        StorageReference fileRef = mStorageRef.child("Images/Products/" + newProduct.getProductID() + "/" + imageFileName);
-        fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Log.d("item", "getDownloadUrl: " + uri.toString());
-
+            StorageReference fileRef = mStorageRef.child("Images/Products/" + newProduct.getProductID() + "/" + imageFileName);
+            int finalI = i;
+            fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Log.d("item", "getDownloadUrl: " + uri.toString());
 //                        newProduct.setImgUrl(uri.toString());
-                        
-                        mViewModel.insert(newProduct);
-                        clearInputs();
-                        getActivity().onBackPressed();
-                    }
-                });
-                Toast.makeText(getContext(), "Image uploaded succesfully", Toast.LENGTH_LONG).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(), "Image uploading Failed", Toast.LENGTH_LONG).show();
-            }
-        });
-
+                            Image newImage = new Image(newProduct.getProductID());
+                            newImage.setImgUrl(uri.toString());
+                            mViewModel.insertImage(newImage);
+                        }
+                    });
+                    Toast.makeText(getContext(),
+                            "Image "+ (finalI + 1) +"/" + listSize + " uploaded succesfully",
+                            Toast.LENGTH_LONG).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getContext(), "Image uploading Failed", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+        mViewModel.insert(newProduct);
+        clearInputs();
+//        getActivity().onBackPressed();
     }
 
     private String getFileExt(Uri contentUri) {
@@ -234,9 +258,10 @@ public class NewProductFragment extends Fragment {
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                image = FileProvider.getUriForFile(getContext(),
+                Uri image = FileProvider.getUriForFile(getContext(),
                         "com.example.proyecto_final.fileprovider",
                         photoFile);
+                images.add(image);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, image);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
@@ -282,17 +307,23 @@ public class NewProductFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
-            binding.newProductImgView.setImageURI(image);
+            if(adapter != null){
+                adapter.setList(images);
+            }
         }
 
         if(requestCode == REQUEST_GALLERY && resultCode == RESULT_OK && data != null){
-            image = data.getData();
-            binding.newProductImgView.setImageURI(image);
+            images.add(data.getData());
+            if(adapter != null){
+                adapter.setList(images);
+            }
         }
 
         if(requestCode == REQUEST_FILE && resultCode == RESULT_OK && data != null){
-            image = data.getData();
-            binding.newProductImgView.setImageURI(image);
+            images.add(data.getData());
+            if(adapter != null){
+                adapter.setList(images);
+            }
         }
     }
 }

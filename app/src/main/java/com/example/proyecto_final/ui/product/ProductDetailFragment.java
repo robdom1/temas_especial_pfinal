@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,17 +17,24 @@ import com.bumptech.glide.Glide;
 import com.example.proyecto_final.R;
 import com.example.proyecto_final.databinding.FragmentProductDetailBinding;
 import com.example.proyecto_final.databinding.FragmentProductsBinding;
+import com.example.proyecto_final.entities.Image;
 import com.example.proyecto_final.entities.Product;
 import com.example.proyecto_final.entities.relations.ProductImages;
+import com.example.proyecto_final.ui.PhotoAdapter;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
 
 
 public class ProductDetailFragment extends Fragment {
 
     private FragmentProductDetailBinding binding;
     private ProductsViewModel mViewModel;
+    private ViewPager2 viewPager;
+    private PhotoAdapter adapter;
 
 
     @Override
@@ -34,6 +43,9 @@ public class ProductDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         mViewModel = new ViewModelProvider(this).get(ProductsViewModel.class);
         binding = FragmentProductDetailBinding.inflate(inflater, container, false);
+
+
+
 
         String productId = getArguments().getString("selectedProduct");
 
@@ -78,20 +90,29 @@ public class ProductDetailFragment extends Fragment {
         binding.productDetailPrice.setText(precioStr);
 
         UUID productId = product.getProductID();
-//        ProductImages productImages = mViewModel.getProductImages(productId).getValue();
+
+        viewPager = binding.productDetailViewPager;
+
+        adapter = new PhotoAdapter(getContext());
+
 
         mViewModel.getProductImages(productId).observe(getViewLifecycleOwner(), new Observer<ProductImages>() {
             @Override
             public void onChanged(ProductImages productImages) {
-                if(productImages != null){
-                    if (!productImages.getProductImages().isEmpty()){
-                        Glide.with(ProductDetailFragment.this).load(productImages.getProductImages().get(0)).into(binding.productDetailImageView);
-                        return;
-                    }
+                List<Image> defaultList;
+                if(!productImages.getProductImages().isEmpty()){
+                    defaultList = productImages.getProductImages();
+                }else{
+                    defaultList = new ArrayList<>();
+                    defaultList.add(new Image(null));
                 }
-                binding.productDetailImageView.setImageResource(R.drawable.ic_image_not_found);
+                adapter.setList(defaultList);
+
+
             }
         });
+        viewPager.setAdapter(adapter);
+
 
 //        if(productImages.getProductImages().isEmpty()){
 //            binding.productDetailImageView.setImageResource(R.drawable.ic_image_not_found);

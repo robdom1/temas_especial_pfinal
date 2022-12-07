@@ -9,9 +9,10 @@ import java.util.UUID;
 
 @Entity(tableName = "IMAGE")
 public class Image {
-    @PrimaryKey
+
+    @PrimaryKey(autoGenerate = true)
+    private int imageId;
     @ColumnInfo(name = "IMG_URL")
-    @NonNull
     private String imgUrl;
     @ColumnInfo(name = "PRODUCT_ID")
     private UUID productId;
@@ -19,6 +20,14 @@ public class Image {
     public Image(UUID productId) {
         this.productId = productId;
         this.imgUrl = "";
+    }
+
+    public int getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(int imageId) {
+        this.imageId = imageId;
     }
 
     public String getImgUrl() {
