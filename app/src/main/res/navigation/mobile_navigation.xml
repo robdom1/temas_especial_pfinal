@@ -74,4 +74,9 @@
         tools:layout="@layout/fragment_new_product"
         android:label="@string/new_product_title"
         />
+    <fragment
+        android:id="@+id/nav_cart"
+        android:name="com.example.proyecto_final.ui.cart.CartFragment"
+        android:label="Cart"
+        tools:layout="@layout/fragment_cart" />
 </navigation>

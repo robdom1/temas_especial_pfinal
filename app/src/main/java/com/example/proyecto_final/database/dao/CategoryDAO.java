@@ -39,4 +39,8 @@ public interface CategoryDAO {
     @Transaction
     LiveData<List<CategoryProducts>> getCategoryProducts(String categoryName);
 
+
+
+
+
 }

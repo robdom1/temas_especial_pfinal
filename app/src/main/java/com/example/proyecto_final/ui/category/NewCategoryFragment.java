@@ -70,7 +70,7 @@ public class NewCategoryFragment extends Fragment {
             public void onClick(View v) {
                 String categoryName = binding.newCategoryNameTextView.getText().toString();
                 if(categoryName.equals("")){
-                    binding.newCategoryNameTextView.setError("Este campo no puede estar vacío");
+                    binding.newCategoryNameTextView.setError("This field can't be empty");
                     return;
                 }
 

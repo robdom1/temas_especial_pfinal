@@ -107,18 +107,18 @@ public class NewProductFragment extends Fragment {
             public void onClick(View v) {
                 String productDescription = binding.newProductDescription.getText().toString();
                 if (productDescription.equals("")){
-                    binding.newProductDescription.setError("Este campo no puede estar vacío");
+                    binding.newProductDescription.setError("This field can't be empty");
                     return;
                 }
 
                 String productPrice = binding.newProductPrice.getText().toString();
                 if(productPrice.equals("")){
-                    binding.newProductPrice.setError("Este campo no puede estar vacío");
+                    binding.newProductPrice.setError("This field can't be empty");
                     return;
                 }
                 Double precio = Double.parseDouble(productPrice);
                 if(precio <= 0){
-                    binding.newProductPrice.setError("Este valor es inválido");
+                    binding.newProductPrice.setError("This value is invalid");
                     return;
                 }
 

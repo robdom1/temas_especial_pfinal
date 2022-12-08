@@ -11,11 +11,14 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.proyecto_final.database.dao.CategoryDAO;
 import com.example.proyecto_final.database.dao.ProductDAO;
+import com.example.proyecto_final.database.dao.UserDAO;
+import com.example.proyecto_final.entities.CartProduct;
 import com.example.proyecto_final.entities.Category;
 import com.example.proyecto_final.entities.Image;
 import com.example.proyecto_final.entities.Product;
+import com.example.proyecto_final.entities.User;
 
-@Database(entities = {Product.class, Category.class, Image.class}, version = 3, exportSchema = false)
+@Database(entities = {Product.class, Category.class, Image.class, User.class, CartProduct.class}, version = 5, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static String NAME = "ECOMMERCE_APP";
@@ -23,6 +26,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract ProductDAO productDAO();
     public abstract CategoryDAO categoryDAO();
+    public abstract UserDAO userDAO();
 
     public static synchronized AppDatabase getInstance(Context context){
         if(INSTANCE == null){
